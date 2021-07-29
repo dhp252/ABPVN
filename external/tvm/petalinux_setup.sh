@@ -14,9 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export TVM_VAI_HOME=$(pwd)
+export TVM_VAI_HOME=/opt/tvm-vai
 export TVM_HOME="${TVM_VAI_HOME}"/tvm
 export PYXIR_HOME="${TVM_VAI_HOME}"/pyxir
+
+mkdir -p ${TVM_VAI_HOME}
 
 if [ -d "${TVM_HOME}" ]; then
   rm -rf ${TVM_HOME}
@@ -53,13 +55,13 @@ cd ${TVM_VAI_HOME}
 pip3 install Cython==0.29.23 h5py==2.10.0 pillow
 
 # DOWNLOAD PYXIR AND TVM
-git clone --recursive --branch v0.2.0 --single-branch https://github.com/Xilinx/pyxir.git "${PYXIR_HOME}"
+git clone --recursive --branch rel-v0.3.0 --single-branch https://github.com/Xilinx/pyxir.git "${PYXIR_HOME}"
 git clone --recursive --single-branch https://github.com/apache/tvm.git "${TVM_HOME}" &&\
-    cd ${TVM_HOME} && git checkout cc7f529 && git submodule update --init --recursive
+    cd ${TVM_HOME} && git checkout 40d5193 && git submodule update --init --recursive
 
 # BUILD PYXIR FOR EDGE
 cd "${PYXIR_HOME}"
-sudo python3 setup.py install --use_vai_rt_dpuczdx8g --use_dpuczdx8g_vart
+sudo python3 setup.py install --use_vart_edge_dpu
 
 # BUILD TVM
 cd "${TVM_HOME}"
